@@ -3,7 +3,7 @@ import { FaUserShield } from "react-icons/fa";
 import { MdOutlinePassword } from "react-icons/md";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 
-const roles = [
+const roles:Array<string> = [
   "Student",
   "Parent",
   "Admin",
@@ -12,18 +12,35 @@ const roles = [
   "HOD",
   "HOD Mentor"
 ];
+type loginFormType = {
+  role: string;
+  username: string;
+  password: string;
+}
+
+
 
 const LoginPage: React.FC = () => {
-  const [role, setRole] = useState<string>("Student");
-  const [username, setUsername] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
+  const [formData, setFromData] = useState<loginFormType>({
+    role: roles[0],
+    username: "",
+    password: "",
+  })
+
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
-  const handleLogin = () => {
-    console.log("Role:", role);
-    console.log("Username:", username);
-    console.log("Password:", password);
+  const handleLogin = (e : React.MouseEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    console.log(formData)
+    // console.log("Role:", role);
+    // console.log("Username:", username);
+    // console.log("Password:", password);
     // Add authentication logic here
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setFromData((prevData) => ({ ...prevData, [name]: value }));
   };
 
   return (
@@ -35,8 +52,9 @@ const LoginPage: React.FC = () => {
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Select Role</label>
             <select
-              value={role}
-              onChange={(e) => setRole(e.target.value)}
+              value={formData?.role}
+              name="role"
+              onChange={handleChange}
               className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
             >
               {roles.map((r) => (
@@ -50,8 +68,9 @@ const LoginPage: React.FC = () => {
             <input
               type="text"
               placeholder="Username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              value={formData?.username}
+              onChange={handleChange}
+              name="username"
               className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
             />
           </div>
@@ -61,8 +80,9 @@ const LoginPage: React.FC = () => {
             <input
               type={showPassword ? "text" : "password"}
               placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              value={formData?.password}
+              onChange={handleChange}
+              name="password"
               className="w-full pl-10 pr-10 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
             />
             <div
@@ -73,12 +93,13 @@ const LoginPage: React.FC = () => {
             </div>
           </div>
 
-          <button
+          <input
+            type="submit"
             onClick={handleLogin}
-            className="w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700 transition duration-300 shadow-md"
-          >
-            Login
-          </button>
+            className="w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700 transition duration-300 shadow-md hover:cursor-pointer"
+          
+            value="Login" 
+          />
         </div>
 
         <p className="text-center text-sm text-gray-500">

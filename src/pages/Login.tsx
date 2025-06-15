@@ -18,6 +18,21 @@ type loginFormType = {
   password: string;
 }
 
+type errorConfig = {
+  [key: string]: {
+    required?: boolean;
+    minLength?: number;
+    maxLength?: number;
+    pattern?: RegExp;
+    message: string;
+  }[];
+}
+
+type errorData = {
+  username : string;
+  password : string;
+}
+
 
 
 const LoginPage: React.FC = () => {
@@ -26,11 +41,62 @@ const LoginPage: React.FC = () => {
     username: "",
     password: "",
   })
-
   const [showPassword, setShowPassword] = useState<boolean>(false);
+
+  const [error, setError] = useState<errorData>({
+    username: "",
+    password: "",
+  });
+
+  const errorConfig:errorConfig = {
+    username : [
+      {required : true, message: "Username is required"},
+      {minLength: 3, message: "Username must be at least 3 characters long"},
+      {maxLength: 50, message: "Username must be at most 50 characters long"},
+    ],
+    password : [
+      {required : true, message: "Password is required"},
+      {minLength: 8, message: "Password must be at least 8 characters long"},
+      {maxLength: 50, message: "Password must be at most 50 characters long"},
+      {pattern : /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/, message: "Password must contain at least one uppercase letter, one lowercase letter, and one number"},
+    ]
+  }
+  const validateForm = () : errorData => {  
+    const error = {
+      username: "",
+      password: "",
+    };
+    Object.entries(errorConfig).forEach(([key, _]) => {
+      errorConfig[key].some((rule) => {
+        if (rule.required && !formData[key as keyof loginFormType]) {
+          error[key as keyof errorData] = rule.message;
+          return true; // Stop checking further rules for this field
+        } 
+        if (rule.minLength && formData[key as keyof loginFormType].length < rule.minLength) {
+          error[key as keyof errorData] = rule.message;
+          return true; // Stop checking further rules for this field
+        } 
+        if (rule.maxLength && formData[key as keyof loginFormType].length > rule.maxLength) {
+          error[key as keyof errorData] = rule.message;
+          return true; // Stop checking further rules for this field
+        } 
+        if (rule.pattern && !rule.pattern.test(formData[key as keyof loginFormType])) {
+          error[key as keyof errorData] = rule.message;
+          return true; // Stop checking further rules for this field
+        }
+      })
+    })
+    setError(error);
+    return error;
+  }
 
   const handleLogin = (e : React.MouseEvent<HTMLInputElement>) => {
     e.preventDefault();
+    const error = validateForm();
+    if(error.username || error.password) {
+      console.log("Validation errors:", error);
+      return;
+    }
     console.log(formData)
     // console.log("Role:", role);
     // console.log("Username:", username);
@@ -73,6 +139,7 @@ const LoginPage: React.FC = () => {
               name="username"
               className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
             />
+            <p id="error" className="my-[10px] text-red-700 text-[14px]" >{error.username}</p>
           </div>
 
           <div className="relative">
@@ -91,6 +158,7 @@ const LoginPage: React.FC = () => {
             >
               {showPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
             </div>
+            <p id="error" className="my-[10px] text-red-700 text-[14px]" >{error.password}</p>
           </div>
 
           <input

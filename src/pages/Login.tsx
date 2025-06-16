@@ -97,7 +97,7 @@ const LoginPage: React.FC = () => {
       console.log("Validation errors:", error);
       return;
     }
-    console.log(formData)
+    
     // console.log("Role:", role);
     // console.log("Username:", username);
     // console.log("Password:", password);
@@ -107,6 +107,7 @@ const LoginPage: React.FC = () => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFromData((prevData) => ({ ...prevData, [name]: value }));
+    setError({username : "", password : ""});
   };
 
   return (

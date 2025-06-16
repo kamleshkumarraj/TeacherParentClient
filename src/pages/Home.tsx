@@ -9,7 +9,23 @@ const HomePage: React.FC = () => {
   };
 
   return (
-    <div style={{backgroundImage : `linear-gradient(rgba(255, 153, 51, 0.3), rgba(19, 136, 8, 0.3)), url(https://assets.collegedunia.com/public/college_data/images/appImage/159627636400JIET.jpg)`, backgroundRepeat : 'no-repeat', backgroundSize : '100% 100%', }} className="min-h-screen bg-gradient-to-br from-purple-600 to-indigo-700 flex flex-col items-center justify-center text-white p-4">
+    <div style={{
+        height: '200px',
+        width: '100%',
+        background: `
+          linear-gradient(
+            to bottom,
+            rgba(255, 153, 51, 0.4) 33.33%,    /* Saffron with 80% opacity */
+            rgba(255, 255, 255, 0.5) 33.33%,   /* White with 80% opacity */
+            rgba(255, 255, 255, 0.5) 66.66%,
+            rgba(19, 136, 8, 0.4) 66.66%       /* Green with 80% opacity */
+          ),
+          url('https://images.shiksha.com/mediadata/images/1523350740phpi2sQbl.jpeg')
+        `,
+        backgroundSize: '100% 100%',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+      }} className="min-h-screen  flex flex-col items-center justify-center text-white p-4">
       <h1 className="text-4xl md:text-5xl font-bold mb-6 text-center drop-shadow-lg text-red-400">Welcome to Our College Portal</h1>
 
       <p className="text-lg text-blue-600 font-[500]  md:text-xl max-w-2xl text-center mb-8">

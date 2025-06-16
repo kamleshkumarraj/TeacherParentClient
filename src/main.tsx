@@ -4,6 +4,10 @@ import './index.css';
 import Home from './pages/Home.tsx';
 import LoginPage from './pages/Login.tsx';
 import App from './App.tsx';
+import { Provider } from 'react-redux';
+import { store } from './stores/stores.tsx';
+import { ToastContainer } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
 
 const router = createBrowserRouter([
   {
@@ -27,5 +31,12 @@ const router = createBrowserRouter([
 
 
 createRoot(document.getElementById('root') as HTMLDivElement).render(
-  <RouterProvider router={router}/>
+  <Provider store={store}>
+    <ToastContainer
+        position="top-right"
+        autoClose={2000}
+        style={{ zIndex: 999999999 }}
+      />
+    <RouterProvider router={router} />
+  </Provider>
 )

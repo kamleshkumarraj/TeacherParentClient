@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { FaUserShield } from "react-icons/fa";
 import { MdOutlinePassword } from "react-icons/md";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+import { useLoginMutation } from "../api/studentApi";
+import { toast, type Id } from "react-toastify";
 
 const roles:Array<string> = [
   "Student",
@@ -33,9 +35,25 @@ type errorData = {
   password : string;
 }
 
+type loginResponseType = {
+  data : {
+    message : string;
+    data : object;
+  },
+  error: {
+    data: {
+      message: string;
+    };
+  } | null;
+  isLoading: boolean;
+  isError: boolean;
+  isSuccess: boolean;
+}
+
 
 
 const LoginPage: React.FC = () => {
+  // collection form data.
   const [formData, setFromData] = useState<loginFormType>({
     role: roles[0],
     username: "",
@@ -43,11 +61,13 @@ const LoginPage: React.FC = () => {
   })
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
+  // define error for show on page.
   const [error, setError] = useState<errorData>({
     username: "",
     password: "",
   });
 
+  // define error configuration for validation.
   const errorConfig:errorConfig = {
     username : [
       {required : true, message: "Username is required"},
@@ -61,6 +81,8 @@ const LoginPage: React.FC = () => {
       {pattern : /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/, message: "Password must contain at least one uppercase letter, one lowercase letter, and one number"},
     ]
   }
+
+  //code for validation form.
   const validateForm = () : errorData => {  
     const error = {
       username: "",
@@ -90,20 +112,60 @@ const LoginPage: React.FC = () => {
     return error;
   }
 
-  const handleLogin = (e : React.MouseEvent<HTMLInputElement>) => {
+  // code for handle the user login event.
+  const [loginUser, {data, error: errorData, isLoading,isError, isSuccess}] = useLoginMutation<loginResponseType>();
+  const handleLogin = async (e : React.MouseEvent<HTMLInputElement>) => {
     e.preventDefault();
     const error = validateForm();
     if(error.username || error.password) {
       console.log("Validation errors:", error);
       return;
     }
+    let toastId : Id = "";
     
+    try {
+        // Call the login mutation with the form data
+        
+        await loginUser({fcType : formData.role.toLocaleLowerCase(), credentials : {username: formData.username, password: formData.password}});
+        if(isLoading){
+          toastId = toast.loading("login user...");
+        }
+        if(isSuccess && data) {
+          toast.update(toastId, {
+            render: data.message || "Login successful",
+            type: "success",
+            isLoading: false,
+            autoClose: 1000,
+          });
+
+          if(isError){
+            toast.update(toastId, {
+              render: "Login failed",
+              type: "error",
+              isLoading: false,
+              autoClose: 1000,
+            });
+            return;
+          }
+          // Redirect or perform any other action after successful login
+        }
+
+    } catch (error : unknown) {
+      toast.update(toastId, {
+              render: "Login failed",
+              type: "error",
+              isLoading: false,
+              autoClose: 1000,
+            });
+            return;
+    }
     // console.log("Role:", role);
     // console.log("Username:", username);
     // console.log("Password:", password);
     // Add authentication logic here
   };
 
+  //code for handle the change event of input and select elements.
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFromData((prevData) => ({ ...prevData, [name]: value }));

@@ -11,8 +11,8 @@ export const studentApi = createApi({
     endpoints : (builder) => ({
         // Endpoint for student registration
         login : builder.mutation({
-            query : ({type, credentials}) => ({
-                url : `${type}/login`,
+            query : ({fcType, credentials}) => ({
+                url : `${fcType}/login`,
                 method : 'POST',
                 body : credentials,
                 credentials : 'include'

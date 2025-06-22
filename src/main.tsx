@@ -8,6 +8,8 @@ import { Provider } from 'react-redux';
 import { store } from './stores/stores.tsx';
 import { ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
+import StudentDashboard from './pages/StudentDashboard.tsx';
+import Profile from './components/student/profile.tsx';
 
 const router = createBrowserRouter([
   {
@@ -18,6 +20,14 @@ const router = createBrowserRouter([
       {
         path : '/',
         element : <Home />
+      },
+      {
+        path : '/my-dashboard',
+        element : <StudentDashboard />,
+        children : [{
+          path : '/profile',
+          element : <Profile />
+        }]
       }
     ]
   },

@@ -4,6 +4,8 @@ import { MdOutlinePassword } from "react-icons/md";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { useLoginMutation } from "../api/studentApi";
 import { toast, type Id } from "react-toastify";
+import { toastUpdate } from "../helper/helper";
+import { useNavigate } from "react-router-dom";
 
 const roles:Array<string> = [
   "Student",
@@ -16,7 +18,7 @@ const roles:Array<string> = [
 ];
 type loginFormType = {
   role: string;
-  username: string;
+  email: string;
   password: string;
 }
 
@@ -30,8 +32,17 @@ type errorConfig = {
   }[];
 }
 
+type loginResponse = {
+  data? :  {
+    [keys : string] : string
+  },
+  error : {
+    [keys:string] : string
+  }
+}
+
 type errorData = {
-  username : string;
+  email : string;
   password : string;
 }
 
@@ -53,26 +64,28 @@ type loginResponseType = {
 
 
 const LoginPage: React.FC = () => {
+  // console.log(import.meta.env.VITE_API_BASE_URL);
+  const navigate = useNavigate();
   // collection form data.
   const [formData, setFromData] = useState<loginFormType>({
     role: roles[0],
-    username: "",
+    email: "",
     password: "",
   })
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
   // define error for show on page.
   const [error, setError] = useState<errorData>({
-    username: "",
+    email: "",
     password: "",
   });
 
   // define error configuration for validation.
   const errorConfig:errorConfig = {
-    username : [
-      {required : true, message: "Username is required"},
-      {minLength: 3, message: "Username must be at least 3 characters long"},
-      {maxLength: 50, message: "Username must be at most 50 characters long"},
+    email : [
+      {required : true, message: "email is required"},
+      {minLength: 3, message: "email must be at least 3 characters long"},
+      {maxLength: 50, message: "email must be at most 50 characters long"},
     ],
     password : [
       {required : true, message: "Password is required"},
@@ -85,7 +98,7 @@ const LoginPage: React.FC = () => {
   //code for validation form.
   const validateForm = () : errorData => {  
     const error = {
-      username: "",
+      email: "",
       password: "",
     };
     Object.entries(errorConfig).forEach(([key, _]) => {
@@ -113,54 +126,39 @@ const LoginPage: React.FC = () => {
   }
 
   // code for handle the user login event.
-  const [loginUser, {data, error: errorData, isLoading,isError, isSuccess}] = useLoginMutation<loginResponseType>();
+  const [loginUser] = useLoginMutation<loginResponseType>();
   const handleLogin = async (e : React.MouseEvent<HTMLInputElement>) => {
     e.preventDefault();
     const error = validateForm();
-    if(error.username || error.password) {
+    if(error.email || error.password) {
       console.log("Validation errors:", error);
       return;
     }
     let toastId : Id = "";
     
+    toastId = toast.loading("Logging in...")
+    
     try {
         // Call the login mutation with the form data
         
-        await loginUser({fcType : formData.role.toLocaleLowerCase(), credentials : {username: formData.username, password: formData.password}});
-        if(isLoading){
-          toastId = toast.loading("login user...");
-        }
-        if(isSuccess && data) {
-          toast.update(toastId, {
-            render: data.message || "Login successful",
-            type: "success",
-            isLoading: false,
-            autoClose: 1000,
-          });
+        const {data, error} = await loginUser({fcType : formData.role.toLocaleLowerCase(), credentials : {email: formData.email, password: formData.password}});
 
-          if(isError){
-            toast.update(toastId, {
-              render: "Login failed",
-              type: "error",
-              isLoading: false,
-              autoClose: 1000,
-            });
-            return;
-          }
+        if(data) {
+          toastUpdate({toastId, message : data.message, type : "success"});
+          navigate("/");
+        }
+        if(error) toastUpdate({toastId, message : error?.data?.message, type : "error"})
+      
+        
+
           // Redirect or perform any other action after successful login
         }
 
-    } catch (error : unknown) {
-      toast.update(toastId, {
-              render: "Login failed",
-              type: "error",
-              isLoading: false,
-              autoClose: 1000,
-            });
-            return;
+      catch (error : unknown) {
+          toastUpdate({toastId, message : "Something went wrong", type : "error"})
     }
     // console.log("Role:", role);
-    // console.log("Username:", username);
+    // console.log("email:", email);
     // console.log("Password:", password);
     // Add authentication logic here
   };
@@ -169,7 +167,7 @@ const LoginPage: React.FC = () => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFromData((prevData) => ({ ...prevData, [name]: value }));
-    setError({username : "", password : ""});
+    setError({email : "", password : ""});
   };
 
   return (
@@ -196,13 +194,13 @@ const LoginPage: React.FC = () => {
             <FaUserShield className="absolute left-3 top-3.5 text-gray-400 text-xl" />
             <input
               type="text"
-              placeholder="Username"
-              value={formData?.username}
+              placeholder="email"
+              value={formData?.email}
               onChange={handleChange}
-              name="username"
+              name="email"
               className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
             />
-            <p id="error" className="my-[10px] text-red-700 text-[14px]" >{error.username}</p>
+            <p id="error" className="my-[10px] text-red-700 text-[14px]" >{error.email}</p>
           </div>
 
           <div className="relative">

@@ -18,9 +18,7 @@ export const studentApi = createApi({
                 credentials : 'include'
             }),
             invalidatesTags : ['getStudent'],
-            transformResponse : (response) => ({
-                data : response.data
-            }),
+            
 
         })
     })

@@ -16,8 +16,8 @@ const HomePage: React.FC = () => {
           linear-gradient(
             to bottom,
             rgba(255, 153, 51, 0.4) 33.33%,    /* Saffron with 80% opacity */
-            rgba(255, 255, 255, 0.5) 33.33%,   /* White with 80% opacity */
-            rgba(255, 255, 255, 0.5) 66.66%,
+            rgba(255, 255, 255, 0.4) 33.33%,   /* White with 80% opacity */
+            rgba(255, 255, 255, 0.4) 66.66%,
             rgba(19, 136, 8, 0.4) 66.66%       /* Green with 80% opacity */
           ),
           url('https://images.shiksha.com/mediadata/images/1523350740phpi2sQbl.jpeg')

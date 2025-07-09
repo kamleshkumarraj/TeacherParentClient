@@ -31,6 +31,7 @@ export default function Home() {
   const statsRef = useRef<HTMLDivElement>(null);
   const featuresRef = useRef<HTMLDivElement>(null);
 
+  // animation code.
   useEffect(() => {
     // Hero animations
     if (heroRef.current) {
@@ -85,6 +86,10 @@ export default function Home() {
     }
   }, []);
 
+  console.log(import.meta.env.API_BASE_URL);
+
+
+  // data for showing on webpage.
   const stats = [
     { number: "50000", label: "Active Students", suffix: "+" },
     { number: "2500", label: "Dedicated Teachers", suffix: "+" },

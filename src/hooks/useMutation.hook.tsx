@@ -1,5 +1,5 @@
+import { updateToast } from '@/utils/toast.utils'
 import { useState } from 'react'
-import { toastUpdate } from '../helper/helper'
 import { toast } from 'react-toastify'
 
 export const useMutation = (mutationFn) => {
@@ -17,15 +17,15 @@ export const useMutation = (mutationFn) => {
 
       if (data?.success) {
         setData(data?.data)
-        toastUpdate({
-          toastId,
+        updateToast({
+          id : toastId,
           message: data?.message || 'Successfully created request ',
           type: 'success',
         })
       } else {
         setError(error)
-        toastUpdate({
-          toastId,
+        updateToast({
+          id : toastId,
           message:
             error?.data?.message ||
             'We get error during creating a new request',
@@ -34,9 +34,9 @@ export const useMutation = (mutationFn) => {
       }
     } catch (error) {
       setError(error)
-      toastUpdate({
-        toastId,
-        message: 'We get error during creating a new request',
+      updateToast({
+        id : toastId,
+        message: error?.data?.message || 'We get error during creating a new request',
         type: 'error',
       })
     } finally {

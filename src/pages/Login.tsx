@@ -1,32 +1,24 @@
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { GlassCard } from "@/components/ui/glass-card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { GlassCard } from "@/components/ui/glass-card";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import {
-  GraduationCap,
-  Mail,
-  Lock,
-  Eye,
-  EyeOff,
-  BookOpen,
-  Users,
-  User,
-  ArrowLeft,
-} from "lucide-react";
+import { useError } from "@/hooks/useError.hook";
+import { useMutation } from "@/hooks/useMutation.hook";
 import { cn } from "@/lib/utils";
 import { useLoginMutation } from "@/store/api/user.api";
-import { toast } from "react-toastify";
-import { updateToast } from "@/utils/toast.utils";
-import { useError } from "@/hooks/useError.hook";
+import {
+  ArrowLeft,
+  BookOpen,
+  Eye,
+  EyeOff,
+  GraduationCap,
+  Lock,
+  Mail,
+  User,
+  Users,
+} from "lucide-react";
+import { useState } from "react";
+import { Link } from "react-router-dom";
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
@@ -36,41 +28,15 @@ export default function Login() {
     password: "",
   });
 
-  const [login, {error}] = useLoginMutation();
+  const [login, _, error] = useMutation(useLoginMutation);
   useError([error]);
-  const navigate = useNavigate();
 
 
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     // Handle login logic here
-    let toastId = toast.loading("logging in...");
-    try {
-      const {data} = await login(formData);
-        if(data?.success){
-          updateToast({
-          id : toastId,
-          message : "Login successful",
-          type : "success"
-          });
-          navigate("/");
-      }else{
-        updateToast({
-          id : toastId,
-          message : data?.message || "Something went wrong",
-          type : "error"
-        });
-      }
-      
-    } catch (error) {
-      console.log(error);
-      updateToast({
-        id : toastId,
-        message : error?.data?.message || "Something went wrong",
-        type : "error"
-      })
-    }
+    login({toastMessage: "Logging in...", args: formData });
   };
 
   const userTypes = [

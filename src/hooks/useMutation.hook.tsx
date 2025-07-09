@@ -1,5 +1,6 @@
 import { updateToast } from '@/utils/toast.utils'
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 
 export const useMutation = (mutationFn) => {
@@ -7,21 +8,23 @@ export const useMutation = (mutationFn) => {
   const [isLoading, setIsLoading] = useState(false)
   const [mutate] = mutationFn()
   const [error, setError] = useState(null)
+  const navigate = useNavigate();
 
-  const executeMutate = async ({ toastMessage, args }) => {
+  const executeMutate = async ({ toastMessage, args, navigation }) => {
     const toastId = toast.loading(toastMessage)
     setIsLoading(true)
 
     try {
-      const { data, error } = await mutate(args)
-
+      const {data, error} = await mutate(args)
+      console.log(error)
       if (data?.success) {
-        setData(data?.data)
+        setData(data)
         updateToast({
           id : toastId,
           message: data?.message || 'Successfully created request ',
           type: 'success',
         })
+        if(navigation) navigate('/');
       } else {
         setError(error)
         updateToast({

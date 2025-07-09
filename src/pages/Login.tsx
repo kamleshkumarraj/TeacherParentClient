@@ -28,15 +28,16 @@ export default function Login() {
     password: "",
   });
 
-  const [login, _, error] = useMutation(useLoginMutation);
+  const [login, data, error] = useMutation(useLoginMutation);
   useError([error]);
 
-
+  
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     // Handle login logic here
-    login({toastMessage: "Logging in...", args: formData });
+    login({toastMessage: "Logging in...", args: formData, navigation : '/'});
+    
   };
 
   const userTypes = [

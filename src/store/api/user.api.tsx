@@ -28,4 +28,4 @@ export const userApi = createApi({
   }),
 });
 
-export const { useLoginMutation, useLazyGetUserDataQuery } = userApi;
+export const { useLoginMutation, useGetUserDataQuery } = userApi;

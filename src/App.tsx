@@ -53,6 +53,8 @@ import Partners from "./pages/Partners";
 import NotFound from "./pages/NotFound";
 import {Provider} from 'react-redux'
 import { store } from "./store/store";
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 
 
@@ -149,8 +151,20 @@ const App = () => {
 };
 
 createRoot(document.getElementById("root")!).render(
-  
+
     <Provider store={store}>
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light" // or "dark"
+      />
       <App />
     </Provider>
 );

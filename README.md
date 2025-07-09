@@ -1,55 +1,150 @@
-# React + TypeScript + Vite
+# Student Parent Transparency Portal
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A comprehensive web application for student-parent transparency with real-time monitoring capabilities, built with React, TypeScript, and modern glassmorphic design.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### 🎓 **Student Dashboard**
 
-## Expanding the ESLint configuration
+- Real-time progress tracking with interactive charts
+- Detailed assignment feedback and grading system
+- Comprehensive behavior and participation analytics
+- Digital awards showcase with certificates
+- Profile management with edit capabilities
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### 👨‍🏫 **Teacher Portal**
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+- Complete assignment management system
+- Student behavior tracking and recording
+- Grade book and assessment tools
+- Parent communication hub
+- Awards and recognition management
+- Detailed analytics and reporting
+
+### 👨‍👩‍👧‍👦 **Parent Dashboard**
+
+- Child's academic progress monitoring
+- Attendance tracking with pattern analysis
+- Behavior monitoring with teacher feedback
+- Communication tools with teachers
+- Participation and activity tracking
+- Real-time notifications and alerts
+
+### 💬 **Communication System**
+
+- Real-time messaging between teachers and parents
+- File attachment support
+- Priority level management
+- Message threading and organization
+- Teacher directory and contact management
+
+## Tech Stack
+
+- **Frontend**: React 18 + TypeScript
+- **Styling**: Tailwind CSS with Glassmorphic Design System
+- **Charts**: Recharts for data visualization
+- **Animations**: GSAP + Framer Motion
+- **UI Components**: Radix UI + Custom Components
+- **Routing**: React Router v6
+- **State Management**: React Query + React Hooks
+- **Build Tool**: Vite
+- **Icons**: Lucide React
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js 18+
+- npm or yarn
+
+### Installation
+
+1. Clone the repository:
+
+```bash
+git clone <repository-url>
+cd student-parent-transparency-portal
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+2. Install dependencies:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+```bash
+npm install
 ```
-# TeacherParentClient
+
+3. Start the development server:
+
+```bash
+npm run dev
+```
+
+4. Open your browser and navigate to `http://localhost:8080`
+
+### Available Scripts
+
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run preview` - Preview production build
+- `npm run typecheck` - Run TypeScript type checking
+- `npm run format.fix` - Format code with Prettier
+
+## Project Structure
+
+```
+src/
+├── components/          # Reusable UI components
+│   ├── ui/             # Base UI components (buttons, cards, etc.)
+│   └── layout/         # Layout components (header, footer)
+├── pages/              # Page components
+│   ├── student/        # Student-specific pages
+│   ├── Home.tsx        # Landing page
+│   ├── Login.tsx       # Authentication
+│   ├── StudentDashboard.tsx
+│   ├── TeacherDashboard.tsx
+│   └── ParentDashboard.tsx
+├── hooks/              # Custom React hooks
+├── lib/                # Utility functions
+├── App.tsx             # Main application component
+└── global.css          # Global styles and CSS variables
+```
+
+## Design System
+
+The application uses a modern glassmorphic design system with:
+
+- **Color Scheme**: Purple-blue gradient theme
+- **Typography**: Inter font family
+- **Glass Effects**: Backdrop blur with transparency
+- **Animations**: Smooth transitions and hover effects
+- **Responsive Design**: Mobile-first approach
+- **Dark Mode**: Automatic theme switching
+
+## Key Features Implemented
+
+✅ **Complete Authentication System** (Login/Register with role selection)
+✅ **Three Role-Based Dashboards** (Student/Teacher/Parent)
+✅ **Real-time Data Visualizations** (Charts, progress bars, analytics)
+✅ **Comprehensive Messaging System** (Teacher-parent communication)
+✅ **Advanced Analytics Dashboard** (AI-powered insights, predictive analytics)
+✅ **Digital Awards & Certificates** (Blockchain-ready verification)
+✅ **Mobile-Responsive Design** (Works on all devices)
+✅ **Interactive UI Elements** (Hover effects, animations, transitions)
+
+## Browser Support
+
+- Chrome (latest)
+- Firefox (latest)
+- Safari (latest)
+- Edge (latest)
+
+## Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.

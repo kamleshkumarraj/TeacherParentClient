@@ -86,8 +86,6 @@ export default function Home() {
     }
   }, []);
 
-  console.log(import.meta.env.API_BASE_URL);
-
 
   // data for showing on webpage.
   const stats = [

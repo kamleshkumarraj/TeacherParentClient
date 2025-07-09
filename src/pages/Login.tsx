@@ -23,6 +23,8 @@ import {
   ArrowLeft,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useLoginMutation } from "@/store/api/user.api";
+import { toast } from "sonner";
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
@@ -32,12 +34,19 @@ export default function Login() {
     password: "",
   });
 
-  
+  const [login] = useLoginMutation();
+
+
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // Handle login logic here
-    console.log("Login data:", { ...formData, userType });
+    let toastId = toast.loading("logging in...");
+    try {
+      
+    } catch (error) {
+      
+    }
   };
 
   const userTypes = [

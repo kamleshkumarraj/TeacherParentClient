@@ -17,7 +17,7 @@ import { cn } from "@/lib/utils";
 import { useGetUserDataQuery, useLoginMutation, useLogoutMutation, userApi } from "@/store/api/user.api";
 import { useMutation } from "@/hooks/useMutation.hook";
 import { useDispatch, useSelector } from "react-redux";
-import { getAuthData } from "@/store/slice/authSlice";
+import { getAuthData, resetAuth } from "@/store/slice/authSlice";
 
 const navigation = [
   { name: "Home", href: "/", icon: GraduationCap },
@@ -49,7 +49,8 @@ export default function Header() {
   const logoutHandler = () => {
     
     logout({toastMessage: "Logging out...", args: {}});
-    dispatch(userApi.util.resetApiState());
+    // dispatch(userApi.util.resetApiState());
+    dispatch(resetAuth(''));
   }
 
   return (
@@ -134,15 +135,15 @@ export default function Header() {
                   Logout
                 </Button> :
               <Link to="/login">
-                <Button variant="outline" size="sm" className="glass-nav">
+                <Button  size="sm" className="btn-gradient px-[20px]">
                   Login
                 </Button>
               </Link>  }
-              <Link to="/register">
+              { /* <Link to="/register">
                 <Button size="sm" className="btn-gradient">
                   Register
                 </Button>
-              </Link>
+              </Link> */}
             </div>
 
             {/* Mobile Menu Button */}

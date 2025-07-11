@@ -154,12 +154,12 @@ createRoot(document.getElementById("root")!).render(
 
     <Provider store={store}>
       <ToastContainer
+        closeButton={true}
         position="top-right"
-        autoClose={3000}
+        autoClose={1500}
         hideProgressBar={false}
         newestOnTop
-        closeOnClick
-        rtl={false}
+        closeOnClick={true}
         pauseOnFocusLoss
         draggable
         pauseOnHover

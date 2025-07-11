@@ -14,6 +14,9 @@ import {
   MessageSquare,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useGetUserDataQuery, useLoginMutation, useLogoutMutation, userApi } from "@/store/api/user.api";
+import { useMutation } from "@/hooks/useMutation.hook";
+import { useDispatch } from "react-redux";
 
 const navigation = [
   { name: "Home", href: "/", icon: GraduationCap },
@@ -29,6 +32,11 @@ export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
+  const dispatch = useDispatch();
+
+  const {data:studentData, error, isLoading} = useGetUserDataQuery('');
+  console.log(studentData)
+  console.log(error)
 
   useEffect(() => {
     const handleScroll = () => {
@@ -37,6 +45,12 @@ export default function Header() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+  const [logout] = useMutation(useLogoutMutation);
+  const logoutHandler = () => {
+    
+    logout({toastMessage: "Logging out...", args: {}});
+    dispatch(userApi.util.resetApiState());
+  }
 
   return (
     <header
@@ -96,12 +110,16 @@ export default function Header() {
             </div>
 
             {/* Auth Buttons */}
-            <div className="hidden lg:flex items-center space-x-3">
+            <div className="hidden lg:flex items-center space-x-3">{
+              studentData ?
+              <Button onClick={logoutHandler} variant="outline" size="sm" className="glass-nav">
+                  Logout
+                </Button> :
               <Link to="/login">
                 <Button variant="outline" size="sm" className="glass-nav">
                   Login
                 </Button>
-              </Link>
+              </Link>  }
               <Link to="/register">
                 <Button size="sm" className="btn-gradient">
                   Register

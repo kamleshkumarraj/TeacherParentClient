@@ -18,14 +18,25 @@ export const userApi = createApi({
       }),
       invalidatesTags: ["getUser"],
     }),
-    getUserData: builder.query({
+
+    logout : builder.mutation({
       query: () => ({
-        url: "/student/get-profile",
-        method: "GET",
+        url: "/student/logout",
+        method: "POST",
+        credentials: "include",
       }),
-      providesTags: ["getUser"],
+      invalidatesTags: ["getUser"],
+    }),
+
+    getUserData: builder.query({
+      query: (args) => ({
+        url: "/student/get-my-profile",
+        method: "GET",
+        credentials: "include",
+      }),
+      providesTags : ["getUser"],
     }),
   }),
 });
 
-export const { useLoginMutation, useGetUserDataQuery } = userApi;
+export const { useLoginMutation, useGetUserDataQuery, useLogoutMutation } = userApi;

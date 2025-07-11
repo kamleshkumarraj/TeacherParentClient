@@ -242,3 +242,9 @@
     @apply gradient-primary text-white font-medium px-6 py-3 rounded-full transition-all duration-300 hover:scale-105 active:scale-95 shadow-lg hover:shadow-xl;
   }
 }
+
+
+.Toastify__close-button {
+  display: block !important;
+  opacity: 1 !important;
+}

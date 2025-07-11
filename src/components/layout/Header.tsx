@@ -16,13 +16,14 @@ import {
 import { cn } from "@/lib/utils";
 import { useGetUserDataQuery, useLoginMutation, useLogoutMutation, userApi } from "@/store/api/user.api";
 import { useMutation } from "@/hooks/useMutation.hook";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { getAuthData } from "@/store/slice/authSlice";
 
 const navigation = [
   { name: "Home", href: "/", icon: GraduationCap },
-  { name: "Student Portal", href: "/student", icon: BookOpen },
-  { name: "Teacher Portal", href: "/teacher", icon: Users },
-  { name: "Parent Portal", href: "/parent", icon: User },
+  { name: "Student Portal", href: "/student", icon: BookOpen, role : "student" },
+  { name: "Teacher Portal", href: "/teacher", icon: Users , role : "teacher" },
+  { name: "Parent Portal", href: "/parent", icon: User, role: "parent" },
   { name: "Messages", href: "/messages", icon: MessageSquare },
   { name: "Analytics", href: "/analytics", icon: BarChart3 },
   { name: "Achievements", href: "/achievements", icon: Award },
@@ -34,9 +35,8 @@ export default function Header() {
   const location = useLocation();
   const dispatch = useDispatch();
 
-  const {data:studentData, error, isLoading} = useGetUserDataQuery('');
-  console.log(studentData)
-  console.log(error)
+  const authData = useSelector(getAuthData);
+  console.log(authData)
 
   useEffect(() => {
     const handleScroll = () => {
@@ -90,7 +90,9 @@ export default function Header() {
               {navigation.map((item) => {
                 const isActive = location.pathname === item.href;
                 return (
-                  <Link key={item.name} to={item.href}>
+                  <>
+                  { item?.role ? item?.role === authData?.role &&
+                     <Link key={item.name} to={authData?.isAuthenticated ? item.href : "/login"}>
                     <Button
                       variant={isActive ? "default" : "ghost"}
                       size="sm"
@@ -104,14 +106,30 @@ export default function Header() {
                       <item.icon className="w-4 h-4" />
                       <span>{item.name}</span>
                     </Button>
-                  </Link>
+                  </Link> : 
+                     <Link key={item.name} to={authData?.isAuthenticated ? item.href : "/login"}>
+                    <Button
+                      variant={isActive ? "default" : "ghost"}
+                      size="sm"
+                      className={cn(
+                        "flex items-center space-x-2 transition-all duration-300",
+                        isActive
+                          ? "gradient-primary text-white shadow-glow"
+                          : "hover:bg-white/10",
+                      )}
+                    >
+                      <item.icon className="w-4 h-4" />
+                      <span>{item.name}</span>
+                    </Button>
+                  </Link>}
+                  </>
                 );
               })}
             </div>
 
             {/* Auth Buttons */}
             <div className="hidden lg:flex items-center space-x-3">{
-              studentData ?
+              authData?.isAuthenticated ?
               <Button onClick={logoutHandler} variant="outline" size="sm" className="glass-nav">
                   Logout
                 </Button> :

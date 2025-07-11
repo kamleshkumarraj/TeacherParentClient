@@ -35,14 +35,15 @@ export default function Login() {
   useError([error]);
 
   
+    if(isSuccess){
+      dispatch(setAuth({isAuthenticated : true, role : 'student'}));
+    }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     // Handle login logic here
     login({toastMessage: "Logging in...", args: formData, navigation : '/'});
-    if(isSuccess){
-      dispatch(setAuth({isAuthenticated : true, role : data?.data?.role}));
-    }
+    console.log(isSuccess);
   };
 
   const userTypes = [

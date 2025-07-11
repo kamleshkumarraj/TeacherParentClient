@@ -6,6 +6,7 @@ import { useError } from "@/hooks/useError.hook";
 import { useMutation } from "@/hooks/useMutation.hook";
 import { cn } from "@/lib/utils";
 import { useLoginMutation } from "@/store/api/user.api";
+import { setAuth } from "@/store/slice/authSlice";
 import {
   ArrowLeft,
   BookOpen,
@@ -18,6 +19,7 @@ import {
   Users,
 } from "lucide-react";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 
 export default function Login() {
@@ -27,8 +29,9 @@ export default function Login() {
     email: "",
     password: "",
   });
+  const dispatch = useDispatch();
 
-  const [login, data, error] = useMutation(useLoginMutation);
+  const [login, data, error, isSuccess] = useMutation(useLoginMutation);
   useError([error]);
 
   
@@ -37,7 +40,9 @@ export default function Login() {
     e.preventDefault();
     // Handle login logic here
     login({toastMessage: "Logging in...", args: formData, navigation : '/'});
-    
+    if(isSuccess){
+      dispatch(setAuth({isAuthenticated : true, role : data?.data?.role}));
+    }
   };
 
   const userTypes = [

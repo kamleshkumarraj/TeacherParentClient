@@ -36,7 +36,7 @@ export default function Login() {
 
   
     if(isSuccess){
-      dispatch(setAuth({isAuthenticated : true, role : 'student'}));
+      dispatch(setAuth({isAuthenticated : true, role : userType}));
     }
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -54,8 +54,8 @@ export default function Login() {
       color: "from-blue-500 to-blue-600",
     },
     {
-      value: "teacher",
-      label: "Teacher",
+      value: "faculty",
+      label: "Faculty",
       icon: Users,
       color: "from-green-500 to-green-600",
     },

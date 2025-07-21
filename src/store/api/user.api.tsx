@@ -11,7 +11,7 @@ export const userApi = createApi({
     // user auth related api call.
     login: builder.mutation({
       query: (payload) => ({
-        url: "/student/login",
+        url: "/auth/login",
         method: "POST",
         body: payload,
         credentials: "include",
@@ -21,7 +21,7 @@ export const userApi = createApi({
 
     logout : builder.mutation({
       query: () => ({
-        url: "/student/logout",
+        url: "/auth/logout",
         method: "POST",
         credentials: "include",
       }),

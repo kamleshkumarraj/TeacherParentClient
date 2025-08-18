@@ -22,7 +22,7 @@ import { getAuthData, resetAuth } from "@/store/slice/authSlice";
 const navigation = [
   { name: "Home", href: "/", icon: GraduationCap },
   { name: "Student Portal", href: "/student", icon: BookOpen, role : "student" },
-  { name: "Teacher Portal", href: "/teacher", icon: Users , role : "teacher" },
+  { name: "Teacher Portal", href: "/teacher", icon: Users , role : "faculty" },
   { name: "Parent Portal", href: "/parent", icon: User, role: "parent" },
   { name: "Messages", href: "/messages", icon: MessageSquare },
   { name: "Analytics", href: "/analytics", icon: BarChart3 },

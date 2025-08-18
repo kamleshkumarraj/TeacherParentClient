@@ -10,7 +10,7 @@ export const useMutation = (mutationFn) => {
   const [error, setError] = useState(null)
   const navigate = useNavigate();
 
-  const executeMutate = async ({ toastMessage, args, navigation }) => {
+  const executeMutate = async ({ toastMessage, args, navigation, extraCallback }) => {
     const toastId = toast.loading(toastMessage)
     setIsLoading(true)
 
@@ -19,6 +19,7 @@ export const useMutation = (mutationFn) => {
       console.log(error)
       if (data?.success) {
         setData(data)
+        extraCallback && extraCallback()
         updateToast({
           id : toastId,
           message: data?.message || 'Successfully created request ',

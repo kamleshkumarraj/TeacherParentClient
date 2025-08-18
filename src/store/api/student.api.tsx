@@ -4,7 +4,7 @@ export const studentApi = userApi.injectEndpoints({
     endpoints : (builder) => ({
         getStudentProfile : builder.query({
             query : () => ({
-                url : "/student/get-my-profile",
+                url : "/student/my-profile",
                 method : "GET",
                 credentials: "include"
             }),
@@ -13,3 +13,5 @@ export const studentApi = userApi.injectEndpoints({
         })
     })
 })
+
+export const {useLazyGetStudentProfileQuery} = studentApi;

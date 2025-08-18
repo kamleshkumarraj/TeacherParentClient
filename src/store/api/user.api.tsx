@@ -28,15 +28,7 @@ export const userApi = createApi({
       invalidatesTags: ["getUser"],
     }),
 
-    getUserData: builder.query({
-      query: (args) => ({
-        url: "/student/get-my-profile",
-        method: "GET",
-        credentials: "include",
-      }),
-      providesTags : ["getUser"],
-    }),
   }),
 });
 
-export const { useLoginMutation, useGetUserDataQuery, useLogoutMutation } = userApi;
+export const { useLoginMutation, useLogoutMutation } = userApi;

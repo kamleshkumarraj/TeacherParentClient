@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { GlassCard } from "@/components/ui/glass-card";
 import { Button } from "@/components/ui/button";
@@ -17,45 +17,35 @@ import {
   CheckCircle,
   Save,
 } from "lucide-react";
+import { useLazyGetStudentProfileQuery } from "@/store/api/student.api";
 
 export default function StudentProfile() {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
-  const [studentData, setStudentData] = useState({
-    name: "John Doe",
-    rollNumber: "2024001",
-    class: "Grade 10",
-    section: "A",
-    email: "john.doe@school.edu",
-    phone: "+1 (555) 123-4567",
-    dateOfBirth: "2008-05-15",
-    address: "123 Main Street, City, State 12345",
-    parentContact: "+1 (555) 987-6543",
-    admissionDate: "2020-08-15",
-    bloodGroup: "O+",
-    emergencyContact: "+1 (555) 111-2222",
-  });
+  const [getProfileData, {data : studentData}] = useLazyGetStudentProfileQuery();
 
-  const handleSaveProfile = async (updatedData: any) => {
-    setIsLoading(true);
-    try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
 
-      setStudentData((prev) => ({
-        ...prev,
-        ...updatedData,
-      }));
+  useEffect(() => {
+    getProfileData('');
+  },[])
+  // const [studentData, setStudentData] = useState({
+  //   name: "John Doe",
+  //   rollNumber: "2024001",
+  //   class: "Grade 10",
+  //   section: "A",
+  //   email: "john.doe@school.edu",
+  //   phone: "+1 (555) 123-4567",
+  //   dateOfBirth: "2008-05-15",
+  //   address: "123 Main Street, City, State 12345",
+  //   parentContact: "+1 (555) 987-6543",
+  //   admissionDate: "2020-08-15",
+  //   bloodGroup: "O+",
+  //   emergencyContact: "+1 (555) 111-2222",
+  // });
 
-      setSaveSuccess(true);
-      setTimeout(() => setSaveSuccess(false), 3000);
-    } catch (error) {
-      console.error("Failed to save profile:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+   const handleSaveProfile = () => {};
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary/5 to-secondary/5">
@@ -96,13 +86,13 @@ export default function StudentProfile() {
                 </div>
 
                 <div className="relative inline-block mb-6">
-                  <div className="w-32 h-32 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center mx-auto relative overflow-hidden group">
+                  <div className="w-32 h-32 rounded-full overflow-hidden mx-auto">
                     <img
-                      src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80"
+                      src={studentData?.avatar?.url}
                       alt="Student profile"
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                      className="w-full h-full object-cover"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+                    
                   </div>
                   <Button
                     size="icon"
@@ -111,12 +101,12 @@ export default function StudentProfile() {
                     <Camera className="w-4 h-4 text-gray-600" />
                   </Button>
                 </div>
-                <h2 className="text-2xl font-bold mb-2">{studentData.name}</h2>
+                <h2 className="text-2xl font-bold mb-2">{studentData?.studentProfile?.fullName || "......"}</h2>
                 <p className="text-muted-foreground mb-1">
-                  Roll No: {studentData.rollNumber}
+                  Roll No: {studentData?.studentProfile?.rollNumber}
                 </p>
                 <p className="text-muted-foreground mb-6">
-                  {studentData.class} - Section {studentData.section}
+                  {studentData?.class || 'A1'} - Section {studentData?.studentProfile?.section}
                 </p>
 
                 {saveSuccess && (
@@ -196,21 +186,21 @@ export default function StudentProfile() {
                         <p className="text-sm text-muted-foreground">
                           Full Name
                         </p>
-                        <p className="font-medium">{studentData.name}</p>
+                        <p className="font-medium">{studentData?.studentProfile?.fullName}</p>
                       </div>
                     </div>
                     <div className="flex items-center space-x-3">
                       <Mail className="w-5 h-5 text-muted-foreground" />
                       <div>
                         <p className="text-sm text-muted-foreground">Email</p>
-                        <p className="font-medium">{studentData.email}</p>
+                        <p className="font-medium text-[14px]">{studentData?.email}</p>
                       </div>
                     </div>
                     <div className="flex items-center space-x-3">
                       <Phone className="w-5 h-5 text-muted-foreground" />
                       <div>
                         <p className="text-sm text-muted-foreground">Phone</p>
-                        <p className="font-medium">{studentData.phone}</p>
+                        <p className="font-medium">{studentData?.studentProfile?.phoneNumber}</p>
                       </div>
                     </div>
                     <div className="flex items-center space-x-3">
@@ -220,7 +210,7 @@ export default function StudentProfile() {
                           Date of Birth
                         </p>
                         <p className="font-medium">
-                          {new Date(studentData.dateOfBirth).toLocaleDateString(
+                          {new Date(studentData?.studentProfile?.dateOfBirth).toLocaleDateString(
                             "en-US",
                             {
                               year: "numeric",
@@ -239,7 +229,7 @@ export default function StudentProfile() {
                         <p className="text-sm text-muted-foreground">
                           Roll Number
                         </p>
-                        <p className="font-medium">{studentData.rollNumber}</p>
+                        <p className="font-medium">{studentData?.studentProfile?.rollNumber}</p>
                       </div>
                     </div>
                     <div className="flex items-center space-x-3">
@@ -247,7 +237,7 @@ export default function StudentProfile() {
                       <div>
                         <p className="text-sm text-muted-foreground">Class</p>
                         <p className="font-medium">
-                          {studentData.class} - Section {studentData.section}
+                          {studentData?.studentProfile?.batch?.batchName} - Section {studentData?.studentProfile?.section}
                         </p>
                       </div>
                     </div>
@@ -258,7 +248,7 @@ export default function StudentProfile() {
                           Admission Date
                         </p>
                         <p className="font-medium">
-                          {studentData.admissionDate}
+                          {studentData?.admissionDate || "N/A"}
                         </p>
                       </div>
                     </div>
@@ -268,7 +258,7 @@ export default function StudentProfile() {
                         <p className="text-sm text-muted-foreground">
                           Blood Group
                         </p>
-                        <p className="font-medium">{studentData.bloodGroup}</p>
+                        <p className="font-medium">{studentData?.bloodGroup || "N/A"}</p>
                       </div>
                     </div>
                   </div>
@@ -276,7 +266,7 @@ export default function StudentProfile() {
               </GlassCard>
 
               {/* Contact Information */}
-              <GlassCard className="p-6">
+              {studentData?.contactInfo && <GlassCard className="p-6">
                 <div className="flex items-center justify-between mb-6">
                   <h3 className="text-xl font-semibold">Contact Information</h3>
                   <Button
@@ -317,7 +307,7 @@ export default function StudentProfile() {
                     </div>
                   </div>
                 </div>
-              </GlassCard>
+              </GlassCard>}
 
               {/* Academic Progress Summary */}
               <GlassCard className="p-6">
@@ -352,29 +342,16 @@ export default function StudentProfile() {
               </GlassCard>
             </div>
           </div>
-
-          {/* Development Notice */}
-          <div className="mt-12">
-            <GlassCard className="p-6 text-center">
-              <h3 className="text-lg font-semibold mb-2">
-                🚧 Profile Editing Coming Soon
-              </h3>
-              <p className="text-muted-foreground">
-                Full profile editing capabilities, document uploads, and
-                additional features are under development.
-              </p>
-            </GlassCard>
-          </div>
         </div>
       </div>
 
       {/* Edit Profile Modal */}
-      <EditProfileModal
+      {/* {<EditProfileModal
         isOpen={isEditModalOpen}
         onClose={() => setIsEditModalOpen(false)}
         studentData={studentData}
         onSave={handleSaveProfile}
-      />
+      />} */}
     </div>
   );
 }

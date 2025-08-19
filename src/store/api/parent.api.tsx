@@ -22,3 +22,5 @@ export const parentApi = userApi.injectEndpoints({
         })
     })
 })
+
+export const {useLazyGetParentProfileQuery, useGetAllChildrenQuery} = parentApi;

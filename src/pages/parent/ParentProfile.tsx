@@ -22,32 +22,20 @@ import {
   Star,
   MessageSquare,
 } from "lucide-react";
+import { useGetAllChildrenQuery, useLazyGetParentProfileQuery } from "@/store/api/parent.api";
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function ParentProfile() {
   const [isEditing, setIsEditing] = useState(false);
-  const [profileData, setProfileData] = useState({
-    name: "Michael Johnson",
-    email: "michael.johnson@email.com",
-    phone: "+1 (555) 123-4567",
-    address: "456 Family Avenue, Hometown, HT 54321",
-    occupation: "Software Engineer",
-    emergencyContact: "+1 (555) 987-6543",
-    relationship: "Father",
-    children: [
-      {
-        name: "Emily Johnson",
-        grade: "Grade 10",
-        section: "A",
-        rollNo: "2024001",
-        class: "10A",
-      },
-    ],
-    preferredCommunication: "Email",
-    languages: ["English", "Spanish"],
-    bio: "Dedicated parent committed to supporting my child's educational journey and maintaining open communication with teachers.",
-  });
+  const [getProfileData, {data}] = useLazyGetParentProfileQuery();
+  const [profileData, setProfileData] = useState(data);
+  const {data : children} = useGetAllChildrenQuery('');
+
+  useEffect(() => {
+    getProfileData('')
+    setProfileData(data);
+  },[data])
 
   const profileRef = useRef<HTMLDivElement>(null);
 
@@ -146,13 +134,13 @@ export default function ParentProfile() {
                     </Button>
                   </div>
                   <div>
-                    <h2 className="text-3xl font-bold">{profileData.name}</h2>
+                    <h2 className="text-3xl font-bold">{profileData?.parentProfile?.fullName}</h2>
                     <p className="text-muted-foreground text-lg">
-                      {profileData.relationship} of{" "}
-                      {profileData.children[0].name}
+                      {profileData?.parentProfile?.relationship} of{" "}
+                      {children[0]?.studentProfile?.fullName}
                     </p>
                     <p className="text-sm text-muted-foreground">
-                      {profileData.occupation}
+                      {profileData?.parentProfile?.occupation}
                     </p>
                   </div>
                 </div>
@@ -212,7 +200,7 @@ export default function ParentProfile() {
                           <User className="w-5 h-5 text-muted-foreground" />
                           {isEditing ? (
                             <Input
-                              value={profileData.name}
+                              value={profileData?.parentProfile?.fullName}
                               onChange={(e) =>
                                 setProfileData({
                                   ...profileData,
@@ -221,7 +209,7 @@ export default function ParentProfile() {
                               }
                             />
                           ) : (
-                            <p className="text-lg">{profileData.name}</p>
+                            <p className="text-lg">{profileData?.parentProfile?.fullName}</p>
                           )}
                         </div>
                       </div>
@@ -235,7 +223,7 @@ export default function ParentProfile() {
                           {isEditing ? (
                             <Input
                               type="email"
-                              value={profileData.email}
+                              value={profileData?.email}
                               onChange={(e) =>
                                 setProfileData({
                                   ...profileData,
@@ -244,7 +232,7 @@ export default function ParentProfile() {
                               }
                             />
                           ) : (
-                            <p className="text-lg">{profileData.email}</p>
+                            <p className="text-lg">{profileData?.email}</p>
                           )}
                         </div>
                       </div>
@@ -257,7 +245,7 @@ export default function ParentProfile() {
                           <Phone className="w-5 h-5 text-muted-foreground" />
                           {isEditing ? (
                             <Input
-                              value={profileData.phone}
+                              value={profileData?.parentProfile?.phoneNumber}
                               onChange={(e) =>
                                 setProfileData({
                                   ...profileData,
@@ -266,7 +254,7 @@ export default function ParentProfile() {
                               }
                             />
                           ) : (
-                            <p className="text-lg">{profileData.phone}</p>
+                            <p className="text-lg">{profileData?.parentProfile?.phoneNumber}</p>
                           )}
                         </div>
                       </div>
@@ -279,7 +267,7 @@ export default function ParentProfile() {
                           <Phone className="w-5 h-5 text-muted-foreground" />
                           {isEditing ? (
                             <Input
-                              value={profileData.emergencyContact}
+                              value={profileData?.parentProfile?.emergencyContact || "N/A"}
                               onChange={(e) =>
                                 setProfileData({
                                   ...profileData,
@@ -289,7 +277,7 @@ export default function ParentProfile() {
                             />
                           ) : (
                             <p className="text-lg">
-                              {profileData.emergencyContact}
+                              {profileData?.parentProfile?.emergencyContact || "N/A"}
                             </p>
                           )}
                         </div>
@@ -305,7 +293,7 @@ export default function ParentProfile() {
                           <MapPin className="w-5 h-5 text-muted-foreground mt-1" />
                           {isEditing ? (
                             <Input
-                              value={profileData.address}
+                              value={profileData?.parentProfile?.address || "N/A"}
                               onChange={(e) =>
                                 setProfileData({
                                   ...profileData,
@@ -314,7 +302,7 @@ export default function ParentProfile() {
                               }
                             />
                           ) : (
-                            <p className="text-lg">{profileData.address}</p>
+                            <p className="text-lg">{profileData?.parentProfile?.address || "N/A"}</p>
                           )}
                         </div>
                       </div>
@@ -327,7 +315,7 @@ export default function ParentProfile() {
                           <Briefcase className="w-5 h-5 text-muted-foreground" />
                           {isEditing ? (
                             <Input
-                              value={profileData.occupation}
+                              value={profileData?.parentProfile?.occupation}
                               onChange={(e) =>
                                 setProfileData({
                                   ...profileData,
@@ -336,7 +324,7 @@ export default function ParentProfile() {
                               }
                             />
                           ) : (
-                            <p className="text-lg">{profileData.occupation}</p>
+                            <p className="text-lg">{profileData?.parentProfile?.occupation}</p>
                           )}
                         </div>
                       </div>
@@ -345,13 +333,13 @@ export default function ParentProfile() {
                         <label className="text-sm font-medium mb-2 block">
                           Languages
                         </label>
-                        <div className="flex flex-wrap gap-2">
+                        {profileData?.language && <div className="flex flex-wrap gap-2">
                           {profileData.languages.map((language, index) => (
                             <Badge key={index} variant="outline">
                               {language}
                             </Badge>
                           ))}
-                        </div>
+                        </div>}
                       </div>
 
                       <div>
@@ -362,7 +350,7 @@ export default function ParentProfile() {
                           <textarea
                             className="w-full p-3 rounded-lg border border-white/20 bg-white/10 backdrop-blur-sm"
                             rows={3}
-                            value={profileData.bio}
+                            value={profileData?.parentProfile?.bio}
                             onChange={(e) =>
                               setProfileData({
                                 ...profileData,
@@ -371,7 +359,7 @@ export default function ParentProfile() {
                             }
                           />
                         ) : (
-                          <p className="text-lg">{profileData.bio}</p>
+                          <p className="text-lg">{profileData?.parentProfile?.bio}</p>
                         )}
                       </div>
                     </div>
@@ -384,8 +372,8 @@ export default function ParentProfile() {
                   <h3 className="text-2xl font-bold mb-6">
                     Children Information
                   </h3>
-                  <div className="space-y-6">
-                    {profileData.children.map((child, index) => (
+                  {children && <div className="space-y-6">
+                    {children?.map((child, index) => (
                       <div
                         key={index}
                         className="p-6 bg-white/5 rounded-lg border border-white/10"
@@ -396,13 +384,13 @@ export default function ParentProfile() {
                           </div>
                           <div>
                             <h4 className="text-xl font-semibold">
-                              {child.name}
+                              {child?.studentProfile?.fullName}
                             </h4>
                             <p className="text-muted-foreground">
-                              {child.grade} - Section {child.section}
+                              {child?.studentProfile?.batch?.batchName || "N/A"} - Section {child?.studentProfile?.section}
                             </p>
                             <p className="text-sm text-muted-foreground">
-                              Roll No: {child.rollNo}
+                              Roll No: {child?.studentProfile?.rollNumber || "N/A"}
                             </p>
                           </div>
                         </div>
@@ -434,7 +422,7 @@ export default function ParentProfile() {
                         </div>
                       </div>
                     ))}
-                  </div>
+                  </div>}
                 </GlassCard>
               </TabsContent>
 

@@ -9,7 +9,10 @@ export const facultyApi = userApi.injectEndpoints({
                 method : "GET",
                 credentials : "include"
             }),
+            providesTags : ["getTeacherProfile"],
             transformResponse : (response) => response?.data
         })
     })
 })
+
+export const {useLazyGetFacultyProfileQuery} = facultyApi

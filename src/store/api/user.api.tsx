@@ -6,7 +6,7 @@ export const userApi = createApi({
     baseUrl: import.meta.env.VITE_API_BASE_URL,
     credentials: "include",
   }),
-  tagTypes: ["getUser"],
+  tagTypes: ["getUser", "getTeacherProfile"],
   endpoints: (builder) => ({
     // user auth related api call.
     login: builder.mutation({
@@ -16,7 +16,6 @@ export const userApi = createApi({
         body: payload,
         credentials: "include",
       }),
-      invalidatesTags: ["getUser"],
     }),
 
     logout : builder.mutation({

@@ -27,6 +27,7 @@ const navigation = [
   { name: "Messages", href: "/messages", icon: MessageSquare },
   { name: "Analytics", href: "/analytics", icon: BarChart3 },
   { name: "Achievements", href: "/achievements", icon: Award },
+  {name : "Profile", href: "/teacher/portal", icon: User, role: "faculty" },
 ];
 
 export default function Header() {

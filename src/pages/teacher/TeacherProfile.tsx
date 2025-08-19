@@ -23,26 +23,32 @@ import {
   Trophy,
   Clock,
 } from "lucide-react";
+import { useLazyGetFacultyProfileQuery } from "@/store/api/faculty.api";
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function TeacherProfile() {
   const [isEditing, setIsEditing] = useState(false);
-  const [profileData, setProfileData] = useState({
-    name: "Ms. Sarah Johnson",
-    email: "sarah.johnson@school.edu",
-    phone: "+1 (555) 123-4567",
-    address: "123 Education Street, Learning City, LC 12345",
-    department: "Mathematics",
-    joiningDate: "2018-08-15",
-    employeeId: "TCH-2018-001",
-    qualification: "M.Ed in Mathematics",
-    experience: "6 years",
-    subjects: ["Algebra", "Geometry", "Calculus", "Statistics"],
-    classes: ["Grade 9A", "Grade 10B", "Grade 11C"],
-    bio: "Passionate mathematics educator with 6 years of experience in creating engaging learning environments for students.",
-  });
-
+  // const [profileData, setProfileData] = useState({
+  //   name: "Ms. Sarah Johnson",
+  //   email: "sarah.johnson@school.edu",
+  //   phone: "+1 (555) 123-4567",
+  //   address: "123 Education Street, Learning City, LC 12345",
+  //   department: "Mathematics",
+  //   joiningDate: "2018-08-15",
+  //   employeeId: "TCH-2018-001",
+  //   qualification: "M.Ed in Mathematics",
+  //   experience: "6 years",
+  //   subjects: ["Algebra", "Geometry", "Calculus", "Statistics"],
+  //   classes: ["Grade 9A", "Grade 10B", "Grade 11C"],
+  //   bio: "Passionate mathematics educator with 6 years of experience in creating engaging learning environments for students.",
+  // });
+  const [getProfile, {data }] = useLazyGetFacultyProfileQuery();
+  const [profileData, setProfileData] = useState(data);
+  useEffect(() => {
+    getProfile('')
+    setProfileData(data);
+  },[data])
   const profileRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -107,23 +113,23 @@ export default function TeacherProfile() {
               <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between mb-8">
                 <div className="flex items-center space-x-6">
                   <div className="relative">
-                    <div className="w-24 h-24 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center">
-                      <User className="w-12 h-12 text-white" />
+                    <div className="w-[120px] h-[120px] bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center">
+                      <img className="w-[120px] h-[120px] rounded-full" src={profileData?.avatar?.url} alt="" />
                     </div>
                     <Button
                       size="sm"
-                      className="absolute -bottom-2 -right-2 rounded-full w-8 h-8 p-0"
+                      className="absolute -bottom-1 right-1 rounded-full w-8 h-8 p-0"
                     >
                       <Camera className="w-4 h-4" />
                     </Button>
                   </div>
                   <div>
-                    <h2 className="text-3xl font-bold">{profileData.name}</h2>
+                    <h2 className="text-3xl font-bold">{profileData?.profile?.fullName}</h2>
                     <p className="text-muted-foreground text-lg">
-                      {profileData.department} Teacher
+                      {profileData?.profile?.department || 'N/A'} Teacher
                     </p>
                     <p className="text-sm text-muted-foreground">
-                      Employee ID: {profileData.employeeId}
+                      Employee ID: {profileData?.profile?.employeeId}
                     </p>
                   </div>
                 </div>
@@ -182,7 +188,7 @@ export default function TeacherProfile() {
                           <User className="w-5 h-5 text-muted-foreground" />
                           {isEditing ? (
                             <Input
-                              value={profileData.name}
+                              value={profileData?.profile?.fullName}
                               onChange={(e) =>
                                 setProfileData({
                                   ...profileData,
@@ -191,7 +197,7 @@ export default function TeacherProfile() {
                               }
                             />
                           ) : (
-                            <p className="text-lg">{profileData.name}</p>
+                            <p className="text-lg">{profileData?.profile?.fullName}</p>
                           )}
                         </div>
                       </div>
@@ -205,7 +211,7 @@ export default function TeacherProfile() {
                           {isEditing ? (
                             <Input
                               type="email"
-                              value={profileData.email}
+                              value={profileData?.email}
                               onChange={(e) =>
                                 setProfileData({
                                   ...profileData,
@@ -214,7 +220,7 @@ export default function TeacherProfile() {
                               }
                             />
                           ) : (
-                            <p className="text-lg">{profileData.email}</p>
+                            <p className="text-lg">{profileData?.email}</p>
                           )}
                         </div>
                       </div>
@@ -227,7 +233,7 @@ export default function TeacherProfile() {
                           <Phone className="w-5 h-5 text-muted-foreground" />
                           {isEditing ? (
                             <Input
-                              value={profileData.phone}
+                              value={profileData?.profile?.phoneNumber}
                               onChange={(e) =>
                                 setProfileData({
                                   ...profileData,
@@ -236,7 +242,7 @@ export default function TeacherProfile() {
                               }
                             />
                           ) : (
-                            <p className="text-lg">{profileData.phone}</p>
+                            <p className="text-lg">{profileData?.profile?.phoneNumber}</p>
                           )}
                         </div>
                       </div>
@@ -251,7 +257,7 @@ export default function TeacherProfile() {
                           <MapPin className="w-5 h-5 text-muted-foreground mt-1" />
                           {isEditing ? (
                             <Input
-                              value={profileData.address}
+                              value={profileData?.profile?.address || 'N/A'}
                               onChange={(e) =>
                                 setProfileData({
                                   ...profileData,
@@ -260,7 +266,7 @@ export default function TeacherProfile() {
                               }
                             />
                           ) : (
-                            <p className="text-lg">{profileData.address}</p>
+                            <p className="text-lg">{profileData?.profile?.address || 'N/A'}</p>
                           )}
                         </div>
                       </div>
@@ -271,7 +277,7 @@ export default function TeacherProfile() {
                         </label>
                         <div className="flex items-center space-x-3">
                           <Calendar className="w-5 h-5 text-muted-foreground" />
-                          <p className="text-lg">{profileData.joiningDate}</p>
+                          <p className="text-lg">{profileData?.profile?.joiningDate}</p>
                         </div>
                       </div>
 
@@ -283,7 +289,7 @@ export default function TeacherProfile() {
                           <textarea
                             className="w-full p-3 rounded-lg border border-white/20 bg-white/10 backdrop-blur-sm"
                             rows={3}
-                            value={profileData.bio}
+                            value={profileData?.profile?.bio}
                             onChange={(e) =>
                               setProfileData({
                                 ...profileData,
@@ -292,7 +298,7 @@ export default function TeacherProfile() {
                             }
                           />
                         ) : (
-                          <p className="text-lg">{profileData.bio}</p>
+                          <p className="text-lg">{profileData?.profile?.bio}</p>
                         )}
                       </div>
                     </div>
@@ -311,21 +317,21 @@ export default function TeacherProfile() {
                         <label className="text-sm font-medium mb-2 block">
                           Department
                         </label>
-                        <p className="text-lg">{profileData.department}</p>
+                        <p className="text-lg">{profileData?.profile?.department || 'N/A'}</p>
                       </div>
 
                       <div>
                         <label className="text-sm font-medium mb-2 block">
                           Qualification
                         </label>
-                        <p className="text-lg">{profileData.qualification}</p>
+                        <p className="text-lg">{profileData?.profile?.qualification || "N/A"}</p>
                       </div>
 
                       <div>
                         <label className="text-sm font-medium mb-2 block">
                           Experience
                         </label>
-                        <p className="text-lg">{profileData.experience}</p>
+                        <p className="text-lg">{profileData?.profile?.experience || 'N/A'}</p>
                       </div>
                     </div>
 
@@ -334,26 +340,26 @@ export default function TeacherProfile() {
                         <label className="text-sm font-medium mb-2 block">
                           Subjects Teaching
                         </label>
-                        <div className="flex flex-wrap gap-2">
-                          {profileData.subjects.map((subject, index) => (
+                        {profileData?.subjects && <div className="flex flex-wrap gap-2">
+                          {profileData?.subjects?.map((subject, index) => (
                             <Badge key={index} variant="outline">
                               {subject}
                             </Badge>
                           ))}
-                        </div>
+                        </div>}
                       </div>
 
                       <div>
                         <label className="text-sm font-medium mb-2 block">
                           Classes Assigned
                         </label>
-                        <div className="flex flex-wrap gap-2">
-                          {profileData.classes.map((className, index) => (
+                        {profileData?.classes && <div className="flex flex-wrap gap-2">
+                          {profileData?.classes?.map((className, index) => (
                             <Badge key={index} variant="secondary">
                               {className}
                             </Badge>
                           ))}
-                        </div>
+                        </div>}
                       </div>
                     </div>
                   </div>
@@ -366,7 +372,7 @@ export default function TeacherProfile() {
                     Achievements & Recognition
                   </h3>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    {achievements.map((achievement, index) => (
+                    {achievements?.map((achievement, index) => (
                       <div
                         key={index}
                         className="p-6 bg-white/5 rounded-lg border border-white/10 text-center"

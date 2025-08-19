@@ -28,6 +28,7 @@ const navigation = [
   { name: "Analytics", href: "/analytics", icon: BarChart3 },
   { name: "Achievements", href: "/achievements", icon: Award },
   {name : "Profile", href: "/teacher/portal", icon: User, role: "faculty" },
+  {name : "Profile", href: "/parent/portal", icon: User, role: "parent" },
 ];
 
 export default function Header() {

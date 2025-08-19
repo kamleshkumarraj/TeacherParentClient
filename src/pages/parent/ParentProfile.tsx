@@ -137,7 +137,7 @@ export default function ParentProfile() {
                     <h2 className="text-3xl font-bold">{profileData?.parentProfile?.fullName}</h2>
                     <p className="text-muted-foreground text-lg">
                       {profileData?.parentProfile?.relationship} of{" "}
-                      {children[0]?.studentProfile?.fullName}
+                      {children && children[0]?.studentProfile?.fullName}
                     </p>
                     <p className="text-sm text-muted-foreground">
                       {profileData?.parentProfile?.occupation}

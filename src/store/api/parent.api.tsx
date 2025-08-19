@@ -10,6 +10,15 @@ export const parentApi = userApi.injectEndpoints({
             }),
             transformResponse : (res) => res?.data,
             providesTags : ["getParentProfile"]
+        }),
+        getAllChildren : builder.query({
+            query : () => ({
+                url : '/parent/get-all-children',
+                method : "GET",
+                credentials : "include"
+            }),
+            transformResponse : (res) => res?.data,
+            providesTags : ["getAllChildren"]
         })
     })
 })

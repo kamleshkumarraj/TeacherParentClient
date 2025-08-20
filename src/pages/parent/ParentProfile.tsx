@@ -267,7 +267,7 @@ export default function ParentProfile() {
                           <Phone className="w-5 h-5 text-muted-foreground" />
                           {isEditing ? (
                             <Input
-                              value={profileData?.parentProfile?.emergencyContact || "N/A"}
+                              value={profileData?.parentProfile?.contactInfo?.emergencyContact || "N/A"}
                               onChange={(e) =>
                                 setProfileData({
                                   ...profileData,
@@ -277,7 +277,7 @@ export default function ParentProfile() {
                             />
                           ) : (
                             <p className="text-lg">
-                              {profileData?.parentProfile?.emergencyContact || "N/A"}
+                              {profileData?.contactInfo?.emergencyContact || "N/A"}
                             </p>
                           )}
                         </div>
@@ -302,7 +302,7 @@ export default function ParentProfile() {
                               }
                             />
                           ) : (
-                            <p className="text-lg">{profileData?.parentProfile?.address || "N/A"}</p>
+                            <p className="text-lg">{profileData?.contactInfo?.address || "N/A"}</p>
                           )}
                         </div>
                       </div>
@@ -333,8 +333,8 @@ export default function ParentProfile() {
                         <label className="text-sm font-medium mb-2 block">
                           Languages
                         </label>
-                        {profileData?.language && <div className="flex flex-wrap gap-2">
-                          {profileData.languages.map((language, index) => (
+                        {profileData?.parentProfile?.language && <div className="flex flex-wrap gap-2">
+                          {profileData?.parentProfile?.language.map((language, index) => (
                             <Badge key={index} variant="outline">
                               {language}
                             </Badge>

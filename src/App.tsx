@@ -55,6 +55,9 @@ import {Provider} from 'react-redux'
 import { store } from "./store/store";
 import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import StudentProtectedRoute from "./components/protected/StudentProtectedRoute";
+import FacultyProtectedRoute from "./components/protected/FacultyProtectedRoute";
+import ParentProtectedRoute from "./components/protected/ParentProtectedRoute";
 
 
 
@@ -102,32 +105,34 @@ const App = () => {
               <Route path="/" element={<Home />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
-              <Route path="/student" element={<StudentDashboard />} />
-              <Route path="/student/profile" element={<StudentProfile />} />
+              <Route path="/student" element={<StudentProtectedRoute><StudentDashboard /></StudentProtectedRoute>} />
+              <Route path="/student/profile" element={<StudentProtectedRoute><StudentProfile /></StudentProtectedRoute>} />
               <Route
                 path="/student/assignments"
-                element={<StudentAssignments />}
+                element={<StudentProtectedRoute><StudentAssignments /></StudentProtectedRoute>}
               />
-              <Route path="/student/results" element={<StudentResults />} />
-              <Route path="/student/progress" element={<StudentProgress />} />
-              <Route path="/student/behavior" element={<StudentBehavior />} />
+              <Route path="/student/results" element={<StudentProtectedRoute><StudentResults /></StudentProtectedRoute>} />
+              <Route path="/student/progress" element={<StudentProtectedRoute><StudentProgress /></StudentProtectedRoute>} />
+              <Route path="/student/behavior" element={<StudentProtectedRoute><StudentBehavior /></StudentProtectedRoute>} />
               <Route
                 path="/student/participation"
-                element={<StudentParticipation />}
+                element={<StudentProtectedRoute><StudentParticipation /></StudentProtectedRoute>}
               />
-              <Route path="/student/awards" element={<StudentAwards />} />
-              <Route path="/teacher" element={<TeacherDashboard />} />
-              <Route path="/teacher/portal" element={<TeacherPortal />} />
-              <Route path="/teacher/profile" element={<TeacherProfile />} />
-              <Route path="/teacher/classes" element={<TeacherClasses />} />
-              <Route path="/teacher/gradebook" element={<TeacherGradebook />} />
-              <Route path="/parent" element={<ParentDashboard />} />
-              <Route path="/parent/portal" element={<ParentPortal />} />
-              <Route path="/parent/profile" element={<ParentProfile />} />
-              <Route path="/parent/reports" element={<ParentReports />} />
+              <Route path="/student/awards" element={<StudentProtectedRoute><StudentAwards /></StudentProtectedRoute>} />
+
+              <Route path="/teacher" element={<FacultyProtectedRoute><TeacherDashboard /></FacultyProtectedRoute>} />
+              <Route path="/teacher/portal" element={<FacultyProtectedRoute><TeacherPortal /></FacultyProtectedRoute>} />
+              <Route path="/teacher/profile" element={<FacultyProtectedRoute><TeacherProfile /></FacultyProtectedRoute>} />
+              <Route path="/teacher/classes" element={<FacultyProtectedRoute><TeacherClasses /></FacultyProtectedRoute>} />
+              <Route path="/teacher/gradebook" element={<FacultyProtectedRoute><TeacherGradebook /></FacultyProtectedRoute>} />
+
+              <Route path="/parent" element={<ParentProtectedRoute><ParentDashboard /></ParentProtectedRoute>} />
+              <Route path="/parent/portal" element={<ParentProtectedRoute><ParentPortal /></ParentProtectedRoute>} />
+              <Route path="/parent/profile" element={<ParentProtectedRoute><ParentProfile /></ParentProtectedRoute>} />
+              <Route path="/parent/reports" element={<ParentProtectedRoute><ParentReports /></ParentProtectedRoute>} />
               <Route
                 path="/parent/communications"
-                element={<ParentCommunications />}
+                element={<ParentProtectedRoute><ParentCommunications /></ParentProtectedRoute>}
               />
               <Route path="/analytics" element={<Analytics />} />
               <Route path="/achievements" element={<Achievements />} />

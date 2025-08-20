@@ -48,6 +48,7 @@ import {
   Download,
   Eye,
 } from "lucide-react";
+import { useGetAllChildrenQuery } from "@/store/api/parent.api";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -72,13 +73,15 @@ export default function ParentDashboard() {
   }, [activeTab]);
 
   // Sample student data
-  const studentInfo = {
-    name: "Emily Johnson",
-    rollNumber: "2024001",
-    class: "Grade 10",
-    section: "A",
-    photo: "/api/placeholder/150/150",
-  };
+  // const studentInfo = {
+  //   name: "Emily Johnson",
+  //   rollNumber: "2024001",
+  //   class: "Grade 10",
+  //   section: "A",
+  //   photo: "/api/placeholder/150/150",
+  // };
+  const {data} = useGetAllChildrenQuery('');
+  const studentInfo = data && data[0];
 
   // Sample data for charts
   const gradesTrend = [
@@ -206,13 +209,13 @@ export default function ParentDashboard() {
       <GlassCard className="animate-card p-6">
         <div className="flex items-center space-x-6">
           <div className="w-20 h-20 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center">
-            <User className="w-10 h-10 text-white" />
+            <img className="w-20 h-20 rounded-full" src={studentInfo?.avatar?.url} />
           </div>
           <div className="flex-1">
-            <h2 className="text-2xl font-bold">{studentInfo.name}</h2>
+            <h2 className="text-2xl font-bold">{studentInfo?.studentProfile?.fullName}</h2>
             <p className="text-muted-foreground">
-              Roll No: {studentInfo.rollNumber} • {studentInfo.class} - Section{" "}
-              {studentInfo.section}
+              Roll No: {studentInfo?.studentProfile?.rollNumber} • {studentInfo?.studentProfile?.batch?.batchName} - Section{" "}
+              {studentInfo?.studentProfile?.section}
             </p>
           </div>
           <div className="flex space-x-3">

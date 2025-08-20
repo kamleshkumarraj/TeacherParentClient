@@ -35,6 +35,7 @@ export default function Login() {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
+    role : ""
   });
   const dispatch = useDispatch();
 
@@ -129,7 +130,10 @@ export default function Login() {
                 <button
                   key={type.value}
                   type="button"
-                  onClick={() => setUserType(type.value)}
+                  onClick={() => {
+                    setUserType(type.value);
+                    setFormData({ ...formData, role: type.value });
+                  }}
                   className={cn(
                     "p-4 rounded-xl border-2 transition-all duration-300 text-center",
                     userType === type.value

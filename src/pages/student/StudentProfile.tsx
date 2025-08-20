@@ -283,7 +283,7 @@ export default function StudentProfile() {
                     <MapPin className="w-5 h-5 text-muted-foreground mt-1" />
                     <div>
                       <p className="text-sm text-muted-foreground">Address</p>
-                      <p className="font-medium">{studentData.address}</p>
+                      <p className="font-medium">{studentData?.contactInfo?.address}</p>
                     </div>
                   </div>
                   <div className="flex items-center space-x-3">
@@ -292,7 +292,7 @@ export default function StudentProfile() {
                       <p className="text-sm text-muted-foreground">
                         Parent Contact
                       </p>
-                      <p className="font-medium">{studentData.parentContact}</p>
+                      <p className="font-medium">{studentData?.contactInfo?.parentPhoneNumber}</p>
                     </div>
                   </div>
                   <div className="flex items-center space-x-3">
@@ -302,7 +302,7 @@ export default function StudentProfile() {
                         Emergency Contact
                       </p>
                       <p className="font-medium">
-                        {studentData.emergencyContact}
+                        {studentData?.contactInfo?.emergencyContact}
                       </p>
                     </div>
                   </div>

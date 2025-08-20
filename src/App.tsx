@@ -150,8 +150,8 @@ const App = () => {
   );
 };
 
-createRoot(document.getElementById("root")!).render(
-
+const Application = () => {
+  return (
     <Provider store={store}>
       <ToastContainer
         closeButton={true}
@@ -167,4 +167,7 @@ createRoot(document.getElementById("root")!).render(
       />
       <App />
     </Provider>
-);
+  )
+}
+
+createRoot(document.getElementById("root")!).render(Application());

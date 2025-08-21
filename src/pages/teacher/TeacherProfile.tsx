@@ -250,7 +250,7 @@ export default function TeacherProfile() {
                               }
                             />
                           ) : (
-                            <p className="text-lg">{profileData?.profile?.address || 'N/A'}</p>
+                            <p className="text-lg">{profileData?.contactInfo?.address || 'N/A'}</p>
                           )}
                         </div>
                       </div>

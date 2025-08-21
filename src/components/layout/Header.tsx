@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { GlassCard } from "@/components/ui/glass-card";
 import { useMutation } from "@/hooks/useMutation.hook";
 import { cn } from "@/lib/utils";
-import { useLogoutMutation } from "@/store/api/user.api";
+import { useLogoutMutation, userApi } from "@/store/api/user.api";
 import { getAuthData, resetAuth } from "@/store/slice/authSlice";
 import {
   Award,
@@ -54,6 +54,7 @@ export default function Header() {
     logout({toastMessage: "Logging out...", args: {}});
     // dispatch(userApi.util.resetApiState());
     dispatch(resetAuth(''));
+    dispatch(userApi.util.resetApiState());
   }
 
   return (

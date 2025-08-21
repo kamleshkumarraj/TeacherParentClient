@@ -60,6 +60,7 @@ import TeacherProfile from "./pages/teacher/TeacherProfile";
 import { useDirectLoginMutation } from "./store/api/user.api";
 import { setAuth } from "./store/slice/authSlice";
 import { store } from "./store/store";
+import SelectionPage from "./pages/teacher/SelectionPage";
 
 const App = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -174,7 +175,7 @@ const App = () => {
               path="/teacher"
               element={
                 <FacultyProtectedRoute>
-                  <TeacherDashboard />
+                  <SelectionPage />
                 </FacultyProtectedRoute>
               }
             />

@@ -27,7 +27,15 @@ export const userApi = createApi({
       invalidatesTags: ["getUser"],
     }),
 
+    directLogin : builder.mutation({
+      query : (payload) => ({
+        url : "/auth/direct-login",
+        method : "POST",
+        credentials : "include"
+      })
+    })
+
   }),
 });
 
-export const { useLoginMutation, useLogoutMutation } = userApi;
+export const { useLoginMutation, useLogoutMutation, useDirectLoginMutation } = userApi;

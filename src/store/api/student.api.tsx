@@ -14,4 +14,4 @@ export const studentApi = userApi.injectEndpoints({
     })
 })
 
-export const {useLazyGetStudentProfileQuery} = studentApi;
+export const {useGetStudentProfileQuery} = studentApi;

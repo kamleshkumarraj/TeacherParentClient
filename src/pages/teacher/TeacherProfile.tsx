@@ -1,54 +1,38 @@
-import { useState, useEffect, useRef } from "react";
+import Header from "@/components/layout/Header";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { GlassCard } from "@/components/ui/glass-card";
+import { Input } from "@/components/ui/input";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useGetFacultyProfileQuery } from "@/store/api/faculty.api";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { GlassCard } from "@/components/ui/glass-card";
-import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import Header from "@/components/layout/Header";
 import {
-  User,
-  Phone,
-  Mail,
-  MapPin,
-  Calendar,
   Award,
   BookOpen,
-  Users,
-  Edit,
-  Save,
+  Calendar,
   Camera,
+  Clock,
+  Edit,
+  Mail,
+  MapPin,
+  Phone,
+  Save,
   Star,
   Trophy,
-  Clock,
+  User,
+  Users,
 } from "lucide-react";
-import { useLazyGetFacultyProfileQuery } from "@/store/api/faculty.api";
+import { useEffect, useRef, useState } from "react";
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function TeacherProfile() {
   const [isEditing, setIsEditing] = useState(false);
-  // const [profileData, setProfileData] = useState({
-  //   name: "Ms. Sarah Johnson",
-  //   email: "sarah.johnson@school.edu",
-  //   phone: "+1 (555) 123-4567",
-  //   address: "123 Education Street, Learning City, LC 12345",
-  //   department: "Mathematics",
-  //   joiningDate: "2018-08-15",
-  //   employeeId: "TCH-2018-001",
-  //   qualification: "M.Ed in Mathematics",
-  //   experience: "6 years",
-  //   subjects: ["Algebra", "Geometry", "Calculus", "Statistics"],
-  //   classes: ["Grade 9A", "Grade 10B", "Grade 11C"],
-  //   bio: "Passionate mathematics educator with 6 years of experience in creating engaging learning environments for students.",
-  // });
-  const [getProfile, {data }] = useLazyGetFacultyProfileQuery();
-  const [profileData, setProfileData] = useState(data);
-  useEffect(() => {
-    getProfile('')
-    setProfileData(data);
-  },[data])
+  
+  const {data : profile} = useGetFacultyProfileQuery('');
+  const [profileData, setProfileData] = useState(profile);
+  useEffect(() => {setProfileData(profile)},[profile])
   const profileRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {

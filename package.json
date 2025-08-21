@@ -22,10 +22,11 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-redux": "^9.2.0",
-    "react-router-dom": "^5.3.4",
+    "react-router-dom": "^7.8.1",
     "react-toastify": "^11.0.5",
     "recharts": "^2.15.4",
-    "tailwind-merge": "^2.5.2"
+    "tailwind-merge": "^2.5.2",
+    "uuid": "^11.1.0"
   },
   "devDependencies": {
     "@hookform/resolvers": "^3.9.0",

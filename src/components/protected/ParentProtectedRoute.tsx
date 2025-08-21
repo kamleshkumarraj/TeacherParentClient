@@ -10,11 +10,9 @@ function ParentProtectedRoute({ children }) {
   useEffect(() => {
     if(user?.isAuthenticated && user?.role != 'parent'){
           navigate('/page-not-found');
-          toast.error("You are not authorized to access this page.");
         }
     else if (!user || user?.role != "parent") {
       navigate("/login");
-      toast.error("You are not authorized to access this page.");
     }
   },[user]);
 

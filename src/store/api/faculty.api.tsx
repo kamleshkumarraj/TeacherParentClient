@@ -15,4 +15,4 @@ export const facultyApi = userApi.injectEndpoints({
     })
 })
 
-export const {useLazyGetFacultyProfileQuery} = facultyApi
+export const {useGetFacultyProfileQuery} = facultyApi

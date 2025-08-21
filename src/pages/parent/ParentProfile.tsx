@@ -1,41 +1,37 @@
-import { useState, useEffect, useRef } from "react";
+import Header from "@/components/layout/Header";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { GlassCard } from "@/components/ui/glass-card";
+import { Input } from "@/components/ui/input";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useGetAllChildrenQuery, useGetParentProfileQuery } from "@/store/api/parent.api";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { GlassCard } from "@/components/ui/glass-card";
-import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import Header from "@/components/layout/Header";
 import {
-  User,
-  Phone,
+  Briefcase,
+  Calendar,
+  Camera,
+  Edit,
+  Heart,
   Mail,
   MapPin,
-  Calendar,
-  Users,
-  Briefcase,
-  Edit,
-  Save,
-  Camera,
-  Heart,
-  Star,
   MessageSquare,
+  Phone,
+  Save,
+  Star,
+  User,
+  Users,
 } from "lucide-react";
-import { useGetAllChildrenQuery, useLazyGetParentProfileQuery } from "@/store/api/parent.api";
+import { useEffect, useRef, useState } from "react";
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function ParentProfile() {
   const [isEditing, setIsEditing] = useState(false);
-  const [getProfileData, {data}] = useLazyGetParentProfileQuery();
-  const [profileData, setProfileData] = useState(data);
+  const {data : profile} = useGetParentProfileQuery('');
   const {data : children} = useGetAllChildrenQuery('');
-
-  useEffect(() => {
-    getProfileData('')
-    setProfileData(data);
-  },[data])
+  const [profileData, setProfileData] = useState(profile);
+  useEffect(() => {setProfileData(profile)},[profile]);
 
   const profileRef = useRef<HTMLDivElement>(null);
 

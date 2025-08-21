@@ -10,11 +10,9 @@ function FacultyProtectedRoute({ children }) {
   useEffect(() => {
     if(user?.isAuthenticated && user?.role != 'faculty'){
       navigate('/page-not-found');
-      toast.error("You are not authorized to access this page.");
     }
     else if (!user || user?.role != "faculty") {
       navigate("/login");
-      toast.error("You are not authorized to access this page.");
     }
   },[user]);
   if (!user || user?.role != "faculty") {

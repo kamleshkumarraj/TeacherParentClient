@@ -1,34 +1,29 @@
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { GlassCard } from "@/components/ui/glass-card";
-import { Button } from "@/components/ui/button";
-import EditProfileModal from "@/components/ui/edit-profile-modal";
 import Header from "@/components/layout/Header";
+import { Button } from "@/components/ui/button";
+import { GlassCard } from "@/components/ui/glass-card";
+import { useGetStudentProfileQuery } from "@/store/api/student.api";
 import {
-  User,
-  Mail,
-  Phone,
-  MapPin,
-  Calendar,
-  BookOpen,
   ArrowLeft,
-  Edit,
+  BookOpen,
+  Calendar,
   Camera,
   CheckCircle,
-  Save,
+  Edit,
+  Mail,
+  MapPin,
+  Phone,
+  User
 } from "lucide-react";
-import { useLazyGetStudentProfileQuery } from "@/store/api/student.api";
+import { useState } from "react";
+import { Link } from "react-router-dom";
 
 export default function StudentProfile() {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
-  const [getProfileData, {data : studentData}] = useLazyGetStudentProfileQuery();
+  const {data : studentData} = useGetStudentProfileQuery('');
 
-
-  useEffect(() => {
-    getProfileData('');
-  },[])
+  
   // const [studentData, setStudentData] = useState({
   //   name: "John Doe",
   //   rollNumber: "2024001",

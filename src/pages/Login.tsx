@@ -5,9 +5,6 @@ import { Label } from "@/components/ui/label";
 import { useError } from "@/hooks/useError.hook";
 import { useMutation } from "@/hooks/useMutation.hook";
 import { cn } from "@/lib/utils";
-import { useLazyGetFacultyProfileQuery } from "@/store/api/faculty.api";
-import { useLazyGetParentProfileQuery } from "@/store/api/parent.api";
-import { useLazyGetStudentProfileQuery } from "@/store/api/student.api";
 import { useLoginMutation } from "@/store/api/user.api";
 import { setAuth } from "@/store/slice/authSlice";
 import {
@@ -28,9 +25,6 @@ import { Link } from "react-router-dom";
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [userType, setUserType] = useState<string>("");
-  const [getProfileData] = useLazyGetStudentProfileQuery();
-  const [getFacultyProfile] = useLazyGetFacultyProfileQuery();
-  const [getParentProfile] = useLazyGetParentProfileQuery();
 
   const [formData, setFormData] = useState({
     email: "",
@@ -50,7 +44,7 @@ export default function Login() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     // Handle login logic here
-    login({toastMessage: "Logging in...", args: formData, navigation : '/', extraCallback : userType == 'faculty' ? getFacultyProfile : userType ==  'student' ? getProfileData : userType == 'parent' ? getParentProfile : undefined});
+    login({toastMessage: "Logging in...", args: formData, navigation : '/'});
     
     console.log(isSuccess);
   };

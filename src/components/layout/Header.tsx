@@ -18,6 +18,7 @@ import {
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
+import {v4 as uuid} from 'uuid'
 
 const navigation = [
   { name: "Home", href: "/", icon: GraduationCap },
@@ -95,7 +96,7 @@ export default function Header() {
                 return (
                   <>
                   { item?.role ? item?.role === authData?.role &&
-                     <Link key={item.name} to={authData?.isAuthenticated ? item.href : "/login"}>
+                     <Link key={uuid()} to={authData?.isAuthenticated ? item.href : "/login"}>
                     <Button
                       variant={isActive ? "default" : "ghost"}
                       size="sm"
@@ -110,7 +111,7 @@ export default function Header() {
                       <span>{item.name}</span>
                     </Button>
                   </Link> : 
-                     <Link key={item.name} to={authData?.isAuthenticated ? item.href : "/login"}>
+                     <Link key={uuid()} to={authData?.isAuthenticated ? item.href : "/login"}>
                     <Button
                       variant={isActive ? "default" : "ghost"}
                       size="sm"
@@ -171,7 +172,7 @@ export default function Header() {
                   const isActive = location.pathname === item.href;
                   return (
                     <Link
-                      key={item.name}
+                      key={uuid()}
                       to={item.href}
                       onClick={() => setIsOpen(false)}
                     >

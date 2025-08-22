@@ -3,7 +3,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { GraduationCap, BookOpen, Users } from "lucide-react";
-import { useGetMyBranchQuery, useLazyGetSemesterForBranchQuery } from "@/store/api/faculty.api";
+import { useGetMyBranchQuery, useLazyGetMyClassroomAndBatchQuery, useLazyGetSemesterForBranchQuery } from "@/store/api/faculty.api";
 
 export default function SelectionPage() {
   const [branch, setBranch] = useState({
@@ -11,17 +11,28 @@ export default function SelectionPage() {
     branchName : "",
     branchCode : ""
   });
-  const [semester, setSemester] = useState("");
+  const [semester, setSemester] = useState({
+    _id : "",
+    semesterName : "",
+    semesterCode : ""
+  });
   const [classroom, setClassroom] = useState("");
-  
+  console.log(semester)
   const {data : branches} = useGetMyBranchQuery('');
   const [getSemesterForBranch, {data : semesters}] = useLazyGetSemesterForBranchQuery();
+  const [getClassroom, {data : classroomData}] = useLazyGetMyClassroomAndBatchQuery();
   // const semesters = ["Sem 1", "Sem 2", "Sem 3", "Sem 4", "Sem 5", "Sem 6", "Sem 7", "Sem 8"];
-  const classrooms = ["Batch A", "Batch B", "Batch C"];
+  
+
 
   useEffect(() => {
     if(branch?._id) getSemesterForBranch(branch?._id);
   },[branch])
+
+  useEffect(() => {
+    if(semester?.semesterCode) getClassroom({branch : branch?._id, semester : semester?._id});
+    if(semester?.semesterCode) console.log("Hello")
+  },[semester])
 
   const isReady = branch && semester && classroom;
 
@@ -86,16 +97,28 @@ export default function SelectionPage() {
                     <Users className="w-5 h-5" /> Choose Classroom/Batch
                   </label>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                    {classrooms.map((c) => (
+                    {classroomData && classroomData?.classroom?.map((c) => (
                       <Button
                         key={c}
                         variant={classroom === c ? "default" : "secondary"}
                         className="w-full backdrop-blur-sm bg-white/20 text-white hover:bg-white/30"
                         onClick={() => setClassroom(c)}
                       >
-                        {c}
+                        {c?.classroomCode}
                       </Button>
-                    ))}
+                    ))
+                  }
+                   { classroomData && classroomData?.batch?.map((b) => (
+                      <Button
+                        key={b}
+                        variant={classroom === b ? "default" : "secondary"}
+                        className="w-full backdrop-blur-sm bg-white/20 text-white hover:bg-white/30"
+                        onClick={() => setClassroom(b)}
+                      >
+                        {b?.batchName}
+                      </Button>
+                    ))
+                    }
                   </div>
                 </div>
               )}

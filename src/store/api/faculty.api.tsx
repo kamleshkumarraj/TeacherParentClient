@@ -31,13 +31,15 @@ export const facultyApi = userApi.injectEndpoints({
     }),
 
     getMyClassroomAndBatch: builder.query({
-      query: () => ({
+      query: (payload) => ({
         url: "/faculty/my-batch-classroom",
         method: "GET",
         credentials: "include",
+        params : payload
       }),
       transformResponse: (res) => res?.data,
     })
+
   }),
 });
 
@@ -45,4 +47,5 @@ export const {
   useGetFacultyProfileQuery,
   useGetMyBranchQuery,
   useLazyGetSemesterForBranchQuery,
+  useLazyGetMyClassroomAndBatchQuery,
 } = facultyApi;

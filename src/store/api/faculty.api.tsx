@@ -29,6 +29,15 @@ export const facultyApi = userApi.injectEndpoints({
       }),
       transformResponse: (res) => res?.data,
     }),
+
+    getMyClassroomAndBatch: builder.query({
+      query: () => ({
+        url: "/faculty/my-batch-classroom",
+        method: "GET",
+        credentials: "include",
+      }),
+      transformResponse: (res) => res?.data,
+    })
   }),
 });
 

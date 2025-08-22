@@ -1,17 +1,27 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { GraduationCap, BookOpen, Users } from "lucide-react";
+import { useGetMyBranchQuery, useLazyGetSemesterForBranchQuery } from "@/store/api/faculty.api";
 
 export default function SelectionPage() {
-  const [branch, setBranch] = useState("");
+  const [branch, setBranch] = useState({
+    _id : "",
+    branchName : "",
+    branchCode : ""
+  });
   const [semester, setSemester] = useState("");
   const [classroom, setClassroom] = useState("");
   
-  const branches = ["CSE", "ECE", "ME", "Civil"];
-  const semesters = ["Sem 1", "Sem 2", "Sem 3", "Sem 4", "Sem 5", "Sem 6", "Sem 7", "Sem 8"];
+  const {data : branches} = useGetMyBranchQuery('');
+  const [getSemesterForBranch, {data : semesters}] = useLazyGetSemesterForBranchQuery();
+  // const semesters = ["Sem 1", "Sem 2", "Sem 3", "Sem 4", "Sem 5", "Sem 6", "Sem 7", "Sem 8"];
   const classrooms = ["Batch A", "Batch B", "Batch C"];
+
+  useEffect(() => {
+    if(branch?._id) getSemesterForBranch(branch?._id);
+  },[branch])
 
   const isReady = branch && semester && classroom;
 
@@ -35,14 +45,14 @@ export default function SelectionPage() {
                   <GraduationCap className="w-5 h-5" /> Choose Branch
                 </label>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                  {branches.map((b) => (
+                  {branches &&  branches?.map((b) => (
                     <Button
                       key={b}
                       variant={branch === b ? "default" : "secondary"}
                       className="w-full backdrop-blur-sm bg-white/20 text-white hover:bg-white/30"
                       onClick={() => setBranch(b)}
                     >
-                      {b}
+                      {b?.branchCode}
                     </Button>
                   ))}
                 </div>
@@ -55,14 +65,14 @@ export default function SelectionPage() {
                     <BookOpen className="w-5 h-5" /> Choose Semester
                   </label>
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                    {semesters.map((s) => (
+                    {semesters && semesters.map((s) => (
                       <Button
                         key={s}
                         variant={semester === s ? "default" : "secondary"}
                         className="w-full backdrop-blur-sm bg-white/20 text-white hover:bg-white/30"
                         onClick={() => setSemester(s)}
                       >
-                        {s}
+                        {s?.semesterCode}
                       </Button>
                     ))}
                   </div>

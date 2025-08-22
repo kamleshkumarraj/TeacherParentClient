@@ -23,7 +23,7 @@ export const facultyApi = userApi.injectEndpoints({
 
     getSemesterForBranch: builder.query({
       query: (branchId) => ({
-        url: `/faculty/get-semester/${branchId}`,
+        url: `/faculty/my-semester/${branchId}`,
         method: "GET",
         credentials: "include",
       }),
